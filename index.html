@@ -60,8 +60,6 @@ html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 body{
   margin:0;background-color:var(--bg);color:var(--text);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' fill='none' stroke='%23F6F8E7' stroke-opacity='.055' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 40H70l20 20h60M280 40h-40l-20-20h-20M200 0v20M60 280v-50l20-20v-40M60 0v14M0 200h30l20 20h70l20 20v40M140 0v30l20 20v50M280 200h-30'/%3E%3Ccircle cx='150' cy='60' r='3.5'/%3E%3Ccircle cx='200' cy='20' r='3.5'/%3E%3Ccircle cx='80' cy='170' r='3.5'/%3E%3Ccircle cx='60' cy='14' r='3.5'/%3E%3Ccircle cx='160' cy='100' r='3.5'/%3E%3Ccircle cx='250' cy='200' r='3.5'/%3E%3Crect x='196' y='120' width='44' height='30' rx='3'/%3E%3Cpath d='M204 120v-6M214 120v-6M224 120v-6M232 120v-6M204 150v6M214 150v6M224 150v6M232 150v6'/%3E%3C/svg%3E");
-  background-size:280px 280px;
   font-family:var(--f-body);font-size:var(--t-base);line-height:1.6;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
@@ -76,6 +74,12 @@ main{overflow-x:clip}
 /* soft periwinkle and tea washes plus a fine grain, fixed behind the page */
 .backdrop{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(70vw 60vh at 92% 4%, rgba(175,187,242,.13), transparent 70%),radial-gradient(60vw 55vh at 0% 100%, rgba(191,214,178,.16), transparent 70%),radial-gradient(45vw 40vh at 55% 55%, rgba(191,214,178,.05), transparent 70%)}
 .backdrop::after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .13 0 0 0 0 .15 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E");background-size:180px 180px;opacity:.45;mix-blend-mode:multiply}
+
+/* ASCII schematic field behind the page: a dim layer plus a Tea Green copy that shows through a soft spotlight
+   following the pointer (and drifting on its own when there is none) */
+.ascii{position:absolute;inset:0;margin:0;overflow:hidden;font:400 13px/16px var(--f-mono);letter-spacing:0;white-space:pre;color:var(--ink);opacity:.12;user-select:none}
+.ascii-hot{color:var(--accent);opacity:.8;--r:240px;-webkit-mask:radial-gradient(closest-side,#000 15%,rgba(0,0,0,.55) 50%,transparent) 0 0/calc(var(--r)*2) calc(var(--r)*2) no-repeat;mask:radial-gradient(closest-side,#000 15%,rgba(0,0,0,.55) 50%,transparent) 0 0/calc(var(--r)*2) calc(var(--r)*2) no-repeat;will-change:mask-position}
+@media (max-width:640px){.ascii{font-size:11px;line-height:14px}.ascii-hot{--r:180px}}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 26px;border-radius:var(--r-pill);border:0;cursor:pointer;text-decoration:none;font:600 var(--t-base)/1 var(--f-body);transition:background-color .3s,color .3s,transform .35s var(--ease),box-shadow .35s}
@@ -354,7 +358,9 @@ main{overflow-x:clip}
 .courses .sub{display:block;font-weight:500;font-size:var(--t-sm);color:var(--text-2)}
 
 /* ---------- activities ---------- */
-.act-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s-4)}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,320px));gap:var(--s-4)}
+.act.act-set{border:1px solid var(--line-2);background:color-mix(in srgb, var(--surface) 88%, transparent)}
+.act.act-set h3{margin:0}
 .act{display:grid;align-content:start;gap:var(--s-2);padding:var(--s-5);border-radius:var(--r-lg);border:1.5px dashed var(--line-2);background:rgba(246,248,231,.03)}
 .act h3{margin:var(--s-2) 0 0;font-size:var(--t-xl);font-weight:700;letter-spacing:-.02em;color:var(--ink)}
 .act-role{margin:0;font-weight:600;color:var(--accent-ink)}
@@ -460,7 +466,7 @@ main{overflow-x:clip}
   <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
 </svg>
 
-<div class="backdrop" aria-hidden="true"></div>
+<div class="backdrop" aria-hidden="true"><pre class="ascii"></pre><pre class="ascii ascii-hot"></pre></div>
 <header class="bar">
   <div class="bar-in">
     <a class="logo" href="#top" aria-label="Lorenzo Viray, back to top"><span class="logo-mark" aria-hidden="true">LV</span><span class="logo-name">Lorenzo Viray</span></a>
@@ -891,17 +897,9 @@ main{overflow-x:clip}
       </div>
     </article>
     <div class="act-grid" data-reveal="children">
-        <article class="act">
-          <span class="act-flag">To fill in</span>
-          <h3>Club or organization</h3>
-          <p class="act-role">Role · Dates</p>
-          <p>One or two sentences on what you do there and what you've worked on.</p>
-        </article>
-        <article class="act">
-          <span class="act-flag">To fill in</span>
-          <h3>Club or organization</h3>
-          <p class="act-role">Role · Dates</p>
-          <p>One or two sentences on what you do there and what you've worked on.</p>
+        <article class="act act-set">
+          <h3>IEEE</h3>
+          <p class="act-role">Member since 2025</p>
         </article>
     </div>
   </section>
@@ -957,6 +955,88 @@ const ease = t => t<.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
 const rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
 function rr(ctx,x,y,w,h,r){ ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
 if (ANIM) G.registerPlugin(...[ST, Split].filter(Boolean));
+
+/* ---------- ASCII schematic background ----------
+   Parts (an IC, resistors, capacitors, an op-amp, a transistor, waveforms) are scattered over a character grid the
+   size of the window, then PCB-style traces run out from their wire ends with 45-degree bends and end in vias. */
+(() => {
+  const base = document.querySelector('.ascii'), hot = document.querySelector('.ascii-hot');
+  if (!base || !hot) return;
+  const MOTIFS = [["   .----v----.", " --|1       8|--", " --|2  U1   7|--", " --|3       6|--", " --|4       5|--", "   '---------' "], ["     R4", " --/\\/\\/\\/--"], ["    C2", " ---| |---"], ["      |", "     _|_", "     ___  C1", "      |"], ["      |", "    -----", "     ---", "      - "], ["       |\\", " ------|-\\", "       |  >------", " ------|+/", "       |/"], ["      //", " ---|>|---"], ["     L1", " ---UUUU---"], ["  +--+  +--+  +--+", "  |  |  |  |  |  |", "--+  +--+  +--+  +--"], ["    _       _", "   / \\     / \\", " _/   \\   /   \\_", "       \\_/"], ["        |", "      |/", " -----|", "      |\\>", "        |"], ["  [o o o o o o]"], [" --|[]|--", "    Y1"], ["  \\|/", "   |", "   |"], [" 0x3F 0xA5"], [" 1011 0010"], ["    D1", " ---|>|---"], ["  +5V", "   |", "   o"], ["      __", " ---o/  o---", "     S1"], [" ---|>o---"], ["       |", "       v", " --/\\/\\/\\/--", "     RV1"], ["  _", " |_|", " |_|"], ["     +   -", " ---| |||---", "     BT1"]];
+  let cw = 7.8, lh = 16, builtW = 0, builtH = 0;
+  const measure = () => {
+    const s = document.createElement('span'); s.textContent = 'M'.repeat(40); base.append(s);
+    cw = s.getBoundingClientRect().width / 40 || cw; s.remove();
+    lh = parseFloat(getComputedStyle(base).lineHeight) || lh;
+  };
+  function build() {
+    measure();
+    // a little taller than the window so a phone's address bar sliding away doesn't expose an edge
+    builtW = innerWidth; builtH = innerHeight * 1.2;
+    const cols = Math.ceil(innerWidth / cw) + 1, rows = Math.ceil(builtH / lh) + 1;
+    const g = Array.from({length: rows}, () => Array(cols).fill(' '));
+    const used = Array.from({length: rows}, () => new Uint8Array(cols));
+    const rand = rng(cols * 131 + rows), ri = (a, b) => a + Math.floor(rand() * (b - a + 1));
+    const free = (x, y, w, h, m) => {
+      for (let j = y - m; j < y + h + m; j++) for (let i = x - m*2; i < x + w + m*2; i++)
+        if (j < 0 || i < 0 || j >= rows || i >= cols || used[j][i]) return false;
+      return true;
+    };
+    const pins = [];
+    // scatter parts: roughly one per 420 cells, never overlapping, each part used once before any repeats
+    const want = Math.max(6, Math.round(cols * rows / 420));
+    for (let t = 0, n = 0, bag = []; t < want * 3 && n < want; t++) {
+      if (!bag.length) { bag = MOTIFS.map((_, i) => i); for (let i = bag.length; --i;) { const j = ri(0, i); [bag[i], bag[j]] = [bag[j], bag[i]]; } }
+      const m = MOTIFS[bag.pop()], w = Math.max(...m.map(l => l.length)), h = m.length;
+      let x, y, k = 0;
+      do { x = ri(1, Math.max(1, cols - w - 2)); y = ri(1, Math.max(1, rows - h - 2)); } while (!free(x, y, w, h, 2) && ++k < 40);
+      if (k >= 40) continue;
+      n++;
+      m.forEach((l, j) => {
+        for (let i = 0; i < l.length; i++) if (l[i] !== ' ') { g[y+j][x+i] = l[i]; }
+        for (let i = 0; i < w; i++) used[y+j][x+i] = 1;
+        const a = l.search(/\S/), b = l.trimEnd().length - 1;
+        if (a >= 0 && l[a] === '-') pins.push([x + a - 1, y + j, -1]);
+        if (b >= 0 && l[b] === '-') pins.push([x + b + 1, y + j, 1]);
+      });
+      // vertical leads at the top and bottom
+      [[0, -1], [h - 1, 1]].forEach(([j, dy]) => { const l = m[j], i = l.indexOf('|'); if (i >= 0 && l.trim() === '|') pins.push([x + i, y + j + dy, 0, dy]); });
+    }
+    // traces: run straight, bend 45 degrees, turn vertical (or the reverse), end in a via
+    const put = (x, y, c) => { if (x < 0 || y < 0 || x >= cols || y >= rows || used[y][x]) return false; g[y][x] = c; used[y][x] = 1; return true; };
+    const trace = (x, y, dx, dy) => {
+      for (let seg = 0, len = 0; seg < 5; seg++) {
+        const steps = dx && dy ? ri(2, 4) : ri(4, dx ? 22 : 7);
+        const ch = dy === 0 ? '-' : dx === 0 ? '|' : (dx === dy ? '\\' : '/');
+        for (let s = 0; s < steps; s++, x += dx, y += dy, len++) if (!put(x, y, ch)) return;
+        if (rand() < .22 && len > 6) break;
+        if (dx && dy) { if (rand() < .5) dx = 0; else dy = 0; }           // diagonal ends straight
+        else if (dy === 0) dy = rand() < .5 ? 1 : -1;                    // horizontal bends down or up
+        else dx = rand() < .5 ? 1 : -1;                                  // vertical bends left or right
+      }
+      put(x, y, 'o');
+    };
+    pins.forEach(([x, y, dx, dy = 0]) => { if (rand() < .75) trace(x, y, dx, dy); });
+    for (let k = Math.round(want * 1.2); k--;) trace(ri(0, cols - 1), ri(0, rows - 1), rand() < .5 ? 1 : -1, 0);
+    const txt = g.map(r => r.join('')).join('\n');
+    base.textContent = txt; hot.textContent = txt;
+  }
+  build();
+  let rt; addEventListener('resize', () => { if (innerWidth === builtW && innerHeight <= builtH) return; clearTimeout(rt); rt = setTimeout(build, 200); });
+
+  // spotlight: follows the pointer with a little lag; drifts in a slow loop when the pointer is away or on touch screens
+  let tx = innerWidth * .7, ty = innerHeight * .3, x = tx, y = ty, last = -1e9, raf = 0;
+  const r = () => parseFloat(getComputedStyle(hot).getPropertyValue('--r')) || 240;
+  const tick = now => {
+    if (now - last > 2500) { const t = now / 1000; tx = innerWidth * (.5 + .36 * Math.sin(t * .13)); ty = innerHeight * (.5 + .34 * Math.sin(t * .21 + 1)); }
+    x += (tx - x) * .08; y += (ty - y) * .08;
+    const rad = r(); hot.style.maskPosition = hot.style.webkitMaskPosition = `${x - rad}px ${y - rad}px`;
+    raf = requestAnimationFrame(tick);
+  };
+  addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { tx = e.clientX; ty = e.clientY; last = performance.now(); } }, {passive: true});
+  document.addEventListener('visibilitychange', () => { cancelAnimationFrame(raf); if (!document.hidden) raf = requestAnimationFrame(tick); });
+  raf = requestAnimationFrame(tick);
+})();
 
 /* ---------- smooth scroll (skipped when the visitor prefers reduced motion) ---------- */
 let lenis = null;
